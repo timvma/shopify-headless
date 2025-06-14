@@ -1,5 +1,5 @@
 import { shopifyClient } from "@/lib/shopify";
-import { getProductsQuery } from "@/lib/queries";
+import { getProductsQuery } from "@/lib/shopify/queries";
 import Link from "next/link";
 
 export default async function Home() {

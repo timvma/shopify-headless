@@ -1,22 +1,8 @@
 import AddToCart from "@/components/AddToCart";
+import HorizontalScrollContainer from "@/components/ui/HorizontalScrollContainer";
+import Video from "@/components/ui/Video";
 import { shopifyClient } from "@/lib/shopify";
-
-const query = `
-query ProductByHandle($handle: String!) {
-  productByHandle(handle: $handle) {
-    title
-    description
-    images(first: 2) {
-      edges {
-        node {
-          url
-          altText
-        }
-      }
-    }
-  }
-}
-`;
+import { getProductByHandle } from "@/lib/shopify/queries";
 
 export default async function ProductPage({
   params,
@@ -24,24 +10,66 @@ export default async function ProductPage({
   params: { handle: string };
 }) {
   const variables = { handle: params.handle };
-  const data = await shopifyClient.request(query, variables);
-  const product = data.productByHandle;
+  const data = await shopifyClient.request(getProductByHandle, variables);
+
+  const product = data?.product;
+  const variants = product.variants.nodes;
+  const medias = product.media.nodes;
+
+  console.log(medias);
+
+  const selectedVariant = variants[0];
 
   return (
-    <main className="p-4">
-      <h1 className="text-2xl font-bold">{product.title}</h1>
-      <div className="flex flex-col sm:flex-row gap-4 mt-4">
-        {product.images.edges.map(({ node }: any, i: number) => (
-          <img
-            key={i}
-            src={node.url}
-            alt={node.altText || ""}
-            className="w-64 h-64 object-cover"
-          />
-        ))}
+    <main className="grid gap-2 w-[95vw] max-w-[1223px] mx-auto">
+      <HorizontalScrollContainer>
+        <div className="flex overflow-x-auto h-96 gap-2 scrollbar-hidden">
+          {medias.map((media, i) => {
+            switch (media.mediaContentType) {
+              case "IMAGE":
+                return (
+                  <div
+                    key={i}
+                    className="w-full aspect-square h-full object-cover"
+                  >
+                    <img
+                      src={media.image.url}
+                      alt={media.image.alt}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                );
+
+              case "VIDEO":
+                return (
+                  <div key={i} className="aspect-square w-full h-full">
+                    <Video media={media} />
+                  </div>
+                );
+
+              default:
+                return <div key={i}>helo</div>;
+            }
+          })}
+
+          <div className="w-full aspect-square h-full object-cover">
+            placeholder
+          </div>
+          <div className="w-full aspect-square h-full object-cover">
+            placeholder
+          </div>
+          <div className="w-full aspect-square h-full object-cover">
+            placeholder
+          </div>
+        </div>
+      </HorizontalScrollContainer>
+      <div>
+        <h1 className="text-2xl font-bold">{product.title}</h1>
+
+        <p className="mt-4">{product.description}</p>
+
+        <AddToCart variant={selectedVariant} />
       </div>
-      <p className="mt-4">{product.description}</p>
-      <AddToCart variant={product} />
     </main>
   );
 }
