@@ -14,9 +14,9 @@ export default function Header() {
         <div className="flex gap-20">
           <Link href="/">Coffee</Link>
 
-          <nav
+          {/* <nav
             className={clsx(
-              "grid gap-2 bg-gray-900 absolute w-full left-0 top-0 translate-y-[-100%] md:flex md:relative md:left-auto md:top-auto",
+              "grid gap-2 bg-gray-900 absolute w-full left-0 top-0 translate-y-[-100%] md:flex md:relative ",
               open && "translate-y-[35%]"
             )}
           >
@@ -29,7 +29,7 @@ export default function Header() {
             <Link href="/contact" className="p-2 md:p-0">
               Contact
             </Link>
-          </nav>
+          </nav> */}
         </div>
         <div className="flex gap-1">
           <Link href="/account">
@@ -47,8 +47,6 @@ export default function Header() {
           </button>
         </div>
       </div>
-
-      <div></div>
     </header>
   );
 }

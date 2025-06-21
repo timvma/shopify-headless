@@ -1,12 +1,7 @@
 "use client";
 
 import CartCard from "@/features/cart/CartCard";
-import { createCart } from "@/lib/shopify/cart";
-import {
-  cartCreateMutation,
-  cartLinesAdd,
-  getCartQuery,
-} from "@/lib/shopify/queries";
+import { getCartQuery } from "@/lib/shopify/queries";
 import { useCartStore } from "@/store/cartStore";
 import { shopifyFetch } from "@/store/shopify";
 import Link from "next/link";
@@ -28,7 +23,7 @@ export default function CartPage() {
     const fetchProducts = async () => {
       const data = await shopifyFetch(getCartQuery, { id: cart.id });
       console.log("products", data.cart.lines.nodes);
-      setLineItems([data.cart.lines.nodes]);
+      //setLineItems([data.cart.lines.nodes]);
     };
     fetchProducts();
   }, []);
@@ -36,14 +31,14 @@ export default function CartPage() {
     <>
       <h1>Your Cart</h1>
       {cart && cart?.id}
-      <div className="grid grid-cols-3">
+      {/* <div className="grid grid-cols-3">
         {lineItems.map((line, i) => (
           <CartCard key={i} line={line} />
         ))}
       </div>
-      <br />
-      {cart.checkoutUrl} <br />
-      <Link href={cart.checkoutUrl}>Checkout</Link>
+      <br /> */}
+      {cart?.checkoutURL}
+      {cart && <Link href={""}>Checkout</Link>}
     </>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-const CartCard = React.memo(({ line, onUpdateQuantity }) => {
+const CartCard = React.memo(({ line }) => {
   return (
     <div>
       <div>

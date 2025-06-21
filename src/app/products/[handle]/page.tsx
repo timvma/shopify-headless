@@ -68,6 +68,10 @@ export default async function ProductPage({
 
         <p className="mt-4">{product.description}</p>
 
+        <select name="quantity" className="p-2 w-full rounded-sm">
+          <option value="1">1</option>
+        </select>
+
         <AddToCart variant={selectedVariant} />
       </div>
     </main>

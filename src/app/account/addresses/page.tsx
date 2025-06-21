@@ -1,3 +1,3 @@
 export default function Addresses() {
-  return <></>;
+  return <>Addresses</>;
 }
