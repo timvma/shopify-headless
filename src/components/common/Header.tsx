@@ -5,7 +5,7 @@ export default function Header() {
   return (
     <header className="">
       <div className="flex justify-between ">
-        <Link href="/">Coffee</Link>
+        <Link href="/">Kufii</Link>
         <div className="flex gap-1">
           <nav></nav>
 
