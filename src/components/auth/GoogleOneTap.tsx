@@ -21,17 +21,26 @@ export default function GoogleOneTap() {
   };
 
   const handleScriptLoad = () => {
-    if (window.google) {
-      window.google.accounts.id.initialize({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-        callback: (response) => {
-          console.log("ID Token:", response.credential);
-        },
-        auto_select: false, // Optional
-        cancel_on_tap_outside: false, // Optional
-      });
-      window.google.accounts.id.prompt();
-    }
+    window.google.accounts.id.initialize({
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+      callback: (response) => handleCredentialResponse(response),
+      auto_select: false, // safest default
+    });
+
+    window.google.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed()) {
+        console.warn(
+          "🚫 Not displayed:",
+          notification.getNotDisplayedReason?.()
+        );
+      }
+      if (notification.isSkippedMoment()) {
+        console.warn("⏩ Skipped:", notification.getSkippedReason?.());
+      }
+      if (notification.isDisplayed()) {
+        console.log("🎉 One Tap is displayed.");
+      }
+    });
   };
 
   return (

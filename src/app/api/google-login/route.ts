@@ -1,9 +1,8 @@
-// app/api/google-login/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { idToken } = await req.json();
-
+  console.log(idToken);
   const verify = await fetch(
     `https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`
   );
@@ -16,6 +15,7 @@ export async function POST(req: NextRequest) {
   const googleUser = await verify.json();
   const email = googleUser.email;
   const name = googleUser.name;
+  console.log("verified", googleUser);
 
   const headers = {
     "Content-Type": "application/json",
